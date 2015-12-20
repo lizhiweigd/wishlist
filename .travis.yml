@@ -6,7 +6,7 @@ install:
   - pip install django django-nose coverage coveralls
   - ./test_setup.sh
 
-script: coverage run --source="." manage.py test desirables
+script: coverage run --source="desirables" --omit="*/tests.py,*/apps.py,*/migrations/*" manage.py test desirables
 after_success: coveralls
 
 branches:
