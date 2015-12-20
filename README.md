@@ -4,7 +4,7 @@
 # wishlist
 A retailer-independent online wishlist. Implemented in Python, using Django.
 
-The purpose is to replace things like the Amazon.com wishlist with something more versatile.
+The purpose is to replace things like the Amazon.com wishlist with something more versatile. It's still very much under development, and probably shouldn't be deployed yet.
 
 ## Included libraries
 
