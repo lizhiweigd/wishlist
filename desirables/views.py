@@ -22,6 +22,10 @@ def main_page(request):
 def login_page(request):
     c = {}
     c.update(csrf(request))
+
+    if "next" in request.GET:
+        c["next_url"] = request.GET["next"]
+
     return render_to_response("login.html", c)
 
 def invalid_login_page(request):
@@ -41,7 +45,13 @@ def login(request):
     if user is not None:
         if user.is_active:
             auth_login(request, user)
-            return HttpResponseRedirect("/main")
+            if "next_url" not in request.POST:
+                return HttpResponseRedirect("/main")
+
+            if request.POST["next_url"] == "":
+                return HttpResponseRedirect("/main")
+            else:
+                return HttpResponseRedirect(request.POST["next_url"])
         else:
             return HttpResponseRedirect("/disabled_login")
     else:

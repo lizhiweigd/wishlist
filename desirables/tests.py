@@ -29,6 +29,9 @@ class LoginTestCase(TestCase):
         response = client.get("/login")
         self.assertEqual(response.status_code, 200)
 
+        response = client.get("/login?next=test")
+        self.assertEqual(response.status_code, 200)
+
     def test_login(self):
         client = Client()
 
@@ -61,6 +64,25 @@ class LoginTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/disabled_login")
 
+    def test_login_next_parameter(self):
+        client = Client()
+        
+        response = client.post("/submit_login", {"username": "ValidUser", "password": "passw0rd", "next_url": "/test"})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/test")
+
+        client = Client()
+
+        response = client.post("/submit_login", {"username": "ValidUser", "password": "passw0rd", "next_url": ""})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/main")
+        
+        client = Client()
+        
+        response = client.post("/submit_login", {"username": "ValidUser", "password": "passw0rd"})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/main")
+
     def test_invalid_login_page(self):
         client = Client()
         response = client.get("/invalid_login")
@@ -91,8 +113,19 @@ class LogoutTestCase(TestCase):
         self.assertEqual(response.url, "/")
 
 class MainTestCase(TestCase):
+
+    def setUp(self):
+        user = User.objects.create(username="user")
+        user.set_password("passw0rd")
+        user.save()
     
     def test_main_template(self):
+
         client = Client()
+        response = client.get("/main")
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/login?next=/main")
+
+        client.post("/submit_login", {"username": "user", "password": "passw0rd"})
         response = client.get("/main")
         self.assertEqual(response.status_code, 200)
