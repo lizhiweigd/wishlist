@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block navbar_links %}
+{% endblock %}
+
+{% block main %}
+
+<div class="row">
+  <div class="col-md-4 col-md-offset-4">
+    <h1>Log in</h1>
+    <form action="submit_login" method="post">{% csrf_token %}
+      <div class="form-group">
+	<label for="username">Username:</label>
+	<input id="username" type="text" class="form-control" placeholder="Username" />
+      </div>
+      <div class="form-group">
+	<label for="password">Password:</label>
+	<input id="password" type="password" class="form-control" placeholder="Password" />
+      </div>
+      <input type="submit" class="form-control btn btn-success" value="Log in..." />
+    </form>
+  </div>
+</div>
+
+{% endblock %}
