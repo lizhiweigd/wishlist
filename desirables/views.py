@@ -8,12 +8,14 @@ from django.template.context_processors import csrf
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
 def home_page(request):
     return render_to_response("index.html")
 
+@login_required
 def main_page(request):
     return render_to_response("main.html")
 
