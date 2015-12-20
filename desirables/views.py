@@ -17,6 +17,9 @@ def login_page(request):
     c.update(csrf(request))
     return render_to_response("login.html", c)
 
+def invalid_login_page(request):
+    return render_to_response("invalid_login.html")
+
 def login(request):
     if request.method != "POST":
         return HttpResponseBadRequest("Can only log in with POST.")
