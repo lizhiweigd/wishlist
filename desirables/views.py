@@ -7,6 +7,7 @@ from django.template.context_processors import csrf
 
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
+from django.contrib.auth import logout as auth_logout
 
 # Create your views here.
 
@@ -43,3 +44,10 @@ def login(request):
             return HttpResponseRedirect("/disabled_login")
     else:
         return HttpResponseRedirect("/invalid_login")
+
+def logout(request):
+    if request.method != "GET":
+        return HttpResponseBadRequest("Can only log out with GET.")
+
+    auth_logout(request)
+    return HttpResponseRedirect("/")

@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'^submit_login', views.login),
     url(r'^invalid_login', views.invalid_login_page),
     url(r'^disabled_login', views.invalid_login_page),
+    url(r'^logout$', views.logout),
 ]

@@ -71,6 +71,25 @@ class LoginTestCase(TestCase):
         response = client.get("/disabled_login")
         self.assertEqual(response.status_code, 200)
 
+class LogoutTestCase(TestCase):
+    
+    def setUp(self):
+        user = User.objects.create(username="user")
+        user.set_password("passw0rd")
+        user.save()
+
+    def test_logout(self):
+        client = Client()
+
+        client.post("/submit_login", {"username": "user", "password": "passw0rd"})
+        
+        response = client.post("/logout")
+        self.assertEqual(response.status_code, 400)
+        
+        response = client.get("/logout")
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/")
+
 class MainTestCase(TestCase):
     
     def test_main_template(self):
