@@ -25,7 +25,7 @@ with open(os.path.join(BASE_DIR, "settings/secret.key")) as key_file:
 
 # SECURITY WARNING: don't run with debug turned on in production!
 with open(os.path.join(BASE_DIR, "settings/DEBUG")) as debug_file:
-    DEBUG = bool(debug_file.read().strip())
+    DEBUG = True if debug_file.read().strip() == "True" else False
 
 ALLOWED_HOSTS = []
 
