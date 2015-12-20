@@ -24,7 +24,8 @@ with open(os.path.join(BASE_DIR, "settings/secret.key")) as key_file:
     SECRET_KEY = key_file.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+with open(os.path.join(BASE_DIR, "settings/DEBUG")) as debug_file:
+    DEBUG = bool(debug_file.read().strip())
 
 ALLOWED_HOSTS = []
 
