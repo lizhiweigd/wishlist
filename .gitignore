@@ -65,4 +65,4 @@ target/
 /static/
 
 # Application specific files
-/secret.key
+/settings/*
