@@ -62,5 +62,5 @@ target/
 
 # Django specific files
 *.sqlite3
-static/
+/static/
 
