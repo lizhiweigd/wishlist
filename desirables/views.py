@@ -10,6 +10,8 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 
+from models import WishedForItem
+
 # Create your views here.
 
 def home_page(request):
@@ -17,7 +19,13 @@ def home_page(request):
 
 @login_required
 def main_page(request):
-    return render_to_response("main.html")
+
+    c = {}
+    
+    c["items"] = WishedForItem.objects.all()
+    c["items_len"] = len(c["items"])
+
+    return render_to_response("main.html", c)
 
 def login_page(request):
     c = {}
