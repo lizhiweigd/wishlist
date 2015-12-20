@@ -13,6 +13,9 @@ from django.contrib.auth import login as auth_login
 def home_page(request):
     return render_to_response("index.html")
 
+def main_page(request):
+    return render_to_response("main.html")
+
 def login_page(request):
     c = {}
     c.update(csrf(request))

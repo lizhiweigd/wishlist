@@ -70,3 +70,10 @@ class LoginTestCase(TestCase):
         client = Client()
         response = client.get("/disabled_login")
         self.assertEqual(response.status_code, 200)
+
+class MainTestCase(TestCase):
+    
+    def test_main_template(self):
+        client = Client()
+        response = client.get("/main")
+        self.assertEqual(response.status_code, 200)

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block navbar_links %}
+<li><a href="/login">Log in</a></li>
+{% endblock %}
+
+{% block main %}
+<h1>Welcome {{ users_name }}</h1>
+
+<h2>Your wishlists:</h2>
+<p>
+  You have no wishlists.
+</p>
+{% endblock %}

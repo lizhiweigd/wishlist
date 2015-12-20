@@ -20,6 +20,7 @@ from desirables import views
 
 urlpatterns = [
     url(r'^$', views.home_page),
+    url(r'^main$', views.main_page),
     url(r'^login$', views.login_page),
     url(r'^submit_login', views.login),
     url(r'^invalid_login', views.invalid_login_page),
