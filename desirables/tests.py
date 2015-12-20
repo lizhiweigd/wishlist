@@ -21,6 +21,7 @@ class LoginTestCase(TestCase):
 
         user = User.objects.create(username="DisabledUser")
         user.set_password("passw0rd")
+        user.is_active = False
         user.save()
 
     def test_template(self):
@@ -50,4 +51,22 @@ class LoginTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/main")
 
+        # Invalid login
+        response = client.post("/submit_login", {"username": "ValidUser", "password": "wr0ng_passw0rd"})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/invalid_login")
 
+        # Disabled login
+        response = client.post("/submit_login", {"username": "DisabledUser", "password": "passw0rd"})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/disabled_login")
+
+    def test_invalid_login_page(self):
+        client = Client()
+        response = client.get("/invalid_login")
+        self.assertEqual(response.status_code, 200)
+
+    def test_disabled_login_page(self):
+        client = Client()
+        response = client.get("/disabled_login")
+        self.assertEqual(response.status_code, 200)
