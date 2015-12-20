@@ -3,5 +3,5 @@
 mkdir settings
 cd settings
 touch ALLOWED_HOSTS
-touch secret.key
+echo "REALLY INSECURE TESTING KEY" > secret.key
 echo "True" > DEBUG
