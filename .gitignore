@@ -59,4 +59,8 @@ target/
 # Emacs files
 *~
 \#*\#
+
+# Django specific files
 *.sqlite3
+static/
+
