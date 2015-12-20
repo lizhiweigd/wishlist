@@ -27,8 +27,8 @@ with open(os.path.join(BASE_DIR, "settings/secret.key")) as key_file:
 with open(os.path.join(BASE_DIR, "settings/DEBUG")) as debug_file:
     DEBUG = True if debug_file.read().strip() == "True" else False
 
-ALLOWED_HOSTS = []
-
+with open(os.path.join(BASE_DIR, "settings/ALLOWED_HOSTS")) as hosts_file:
+    ALLOWED_HOSTS = hosts_file.read().strip().split("\n")
 
 # Application definition
 
