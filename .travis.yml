@@ -6,6 +6,10 @@ install:
   - pip install django django-nose coverage coveralls
   - ./test_setup.sh
 
+before_script:
+  - ./manage.py makemigrations
+  - ./manage.py migrate
+
 script: coverage run --source="desirables" --omit="*/tests.py,*/apps.py,*/migrations/*" manage.py test desirables
 after_success: coveralls
 
