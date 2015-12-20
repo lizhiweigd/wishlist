@@ -5,7 +5,8 @@ from django.shortcuts import render_to_response
 
 from django.template.context_processors import csrf
 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
 
 # Create your views here.
 
@@ -33,7 +34,7 @@ def login(request):
     user = authenticate(username=request.POST["username"], password=request.POST["password"])
     if user is not None:
         if user.is_active:
-            login(request, user)
+            auth_login(request, user)
             return HttpResponseRedirect("/main")
         else:
             return HttpResponseRedirect("/disabled_login")
