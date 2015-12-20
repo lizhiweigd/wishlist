@@ -13,10 +13,10 @@
 {% if items_len == 0 %}
 <p>Your wishlist is empty.</p>
 {% else %}
-<table>
+<table class="table table-striped">
   {% for item in items %}
   <tr>
-    <td>
+    <td style="width: 128px">
       {% if item.thumbnail.name != "" %}<img src="{{ MEDIA_URL }}{{ item.thumbnail.name }}" />
       {% else %}<img src="{% static 'pin.png' %}" />{% endif %}
     </td>
