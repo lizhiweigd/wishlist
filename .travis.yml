@@ -4,7 +4,6 @@ python:
 
 install:
   - pip install django django-nose coverage coveralls
-  - apt-get install imagemagick
   - ./test_setup.sh
 
 script: coverage run --source="desirables" --omit="*/tests.py,*/apps.py,*/migrations/*" manage.py test desirables
@@ -14,3 +13,8 @@ branches:
   only:
     - master
     - testing
+
+addons:
+  apt:
+    packages:
+      - imagemagick
