@@ -63,6 +63,7 @@ target/
 # Django specific files
 *.sqlite3
 /static/
+*/migrations/*
 
 # Application specific files
 /settings/*
