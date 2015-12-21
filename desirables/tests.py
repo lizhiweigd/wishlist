@@ -1,6 +1,7 @@
 from django.test import Client, TestCase
 
 from django.contrib.auth.models import User
+from models import WishedForItem
 
 # Create your tests here.
 
@@ -111,6 +112,51 @@ class LogoutTestCase(TestCase):
         response = client.get("/logout")
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/")
+
+class AddingItemsTestCase(TestCase):
+
+    def setUp(self):
+        user = User.objects.create(username="user")
+        user.set_password("passw0rd")
+        user.save()
+
+    def test_new_page_template(self):
+        client = Client()
+
+        # Without login
+        response = client.get("/new_item")
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/login?next=/new_item")
+
+        client.post("/submit_login", {"username": "user", "password": "passw0rd"})
+        response = client.get("/new_item")
+        self.assertEqual(response.status_code, 200)
+
+    def test_add_item(self):
+        client = Client()
+        
+        # Without login
+        response = client.get("/add_item")
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/login?next=/add_item")
+
+        # Without POST
+        response = client.post("/submit_login", {"username": "user", "password": "passw0rd"})
+        response = client.get("/add_item")
+        self.assertEqual(response.status_code, 400)
+
+        # With missing parameters
+        response = client.post("/add_item")
+        self.assertEqual(response.status_code, 400)
+        
+        # Should work
+        wishlist_length = WishedForItem.objects.count()
+        response = client.post("/add_item", {"item_name": "Test item",
+                                             "item_note": "This is some descriptive test.",
+                                             "item_url": "https://example.net",
+                                             "item_number_wanted": "1"})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/main")
 
 class MainTestCase(TestCase):
 
