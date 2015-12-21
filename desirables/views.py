@@ -37,7 +37,25 @@ def new_item_page(request):
 
 @login_required
 def add_item(request):
-    pass
+    if request.method != "POST":
+        return HttpResponseBadRequest("Must be a post request")
+    
+    try:
+        item_title = request.POST["item_name"]
+        item_url = request.POST["item_url"] 
+        item_quantity = request.POST["item_number_wanted"]
+        item_note = request.POST["item_note"]
+    except KeyError:
+        return HttpResponseBadRequest("Missing parameters")
+
+    item = WishedForItem()
+    item.title = item_title
+    item.url = item_url
+    item.number_wished_for = item_quantity
+    item.note = item_note
+    item.save()
+
+    return HttpResponseRedirect("/main")
 
 def login_page(request):
     c = {}

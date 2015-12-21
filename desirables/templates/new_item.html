@@ -7,9 +7,9 @@
 {% block main %}
 
 <div class="row">
-  <div class="col-md-4 col-md-offset-4">
+  <div class="col-md-6 col-md-offset-3">
     <h1>Add new item</h1>
-    <form action="/add-item" method="post">{% csrf_token %}
+    <form action="/add_item" method="post">{% csrf_token %}
       <div class="form-group">
 	<label for="item_title">Title:</label>
 	<input class="form-control" type="text" id="item_name" name="item_name" placeholder="Title" />
