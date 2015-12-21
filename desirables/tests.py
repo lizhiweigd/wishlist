@@ -158,6 +158,95 @@ class AddingItemsTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/main")
 
+class ItemInteractionTestCase(TestCase):
+    
+    def setUp(self):
+        user = User.objects.create(username="user")
+        user.set_password("passw0rd")
+        user.save()
+
+        item = WishedForItem.objects.create()
+        item.id = 1
+        item.title = "Item"
+        item.url = "http://example.net"
+        item.note = ""
+        item.number_wished_for = 2
+        item.save()
+
+    def test_increase_item_count(self):
+        client = Client()
+
+        # Needs to be logged in
+        response = client.post("/increase_item_count", {"id": "1"})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/login?next=/increase_item_count")
+
+        client.post("/submit_login", {"username": "user", "password": "passw0rd"})
+        
+        # GET should not work
+        response = client.get("/increase_item_count")
+        self.assertEqual(response.status_code, 400)
+
+        # POST with missing parameter should not work
+        response = client.post("/increase_item_count")
+        self.assertEqual(response.status_code, 400)
+
+        # Should work
+        response = client.post("/increase_item_count", {"id": "1"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(WishedForItem.objects.get(id=1).number_wished_for, 3)
+
+    def test_decrease_item_count(self):
+        client = Client()
+
+        # Needs to be logged in
+        response = client.post("/decrease_item_count", {"id": "1"})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/login?next=/decrease_item_count")
+
+        client.post("/submit_login", {"username": "user", "password": "passw0rd"})
+        
+        # GET should not work
+        response = client.get("/decrease_item_count")
+        self.assertEqual(response.status_code, 400)
+
+        # POST with missing parameter should not work
+        response = client.post("/decrease_item_count")
+        self.assertEqual(response.status_code, 400)
+
+        # Should work
+        response = client.post("/decrease_item_count", {"id": "1"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(WishedForItem.objects.get(id=1).number_wished_for, 1)
+
+        # Should result in there being no items left
+        response = client.post("/decrease_item_count", {"id": "1"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(WishedForItem.objects.count(), 0)
+
+    def test_delete_item(self):
+        client = Client()
+
+        # Needs to be logged in
+        response = client.post("/delete_item", {"id": "1"})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/login?next=/delete_item")
+
+        client.post("/submit_login", {"username": "user", "password": "passw0rd"})
+        
+        # GET should not work
+        response = client.get("/delete_item")
+        self.assertEqual(response.status_code, 400)
+
+        # POST with missing parameter should not work
+        response = client.post("/delete_item")
+        self.assertEqual(response.status_code, 400)
+
+        # Should result in there being no items left
+        response = client.post("/delete_item", {"id": "1"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(WishedForItem.objects.count(), 0)
+
 class MainTestCase(TestCase):
 
     def setUp(self):

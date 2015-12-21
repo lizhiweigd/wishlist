@@ -21,7 +21,7 @@ def home_page(request):
 def main_page(request):
 
     c = {}
-    
+    c.update(csrf(request))
     c["items"] = WishedForItem.objects.all()
     c["items_len"] = len(c["items"])
 
@@ -56,6 +56,50 @@ def add_item(request):
     item.save()
 
     return HttpResponseRedirect("/main")
+
+@login_required
+def delete_item(request):
+    if request.method != "POST":
+        return HttpResponseBadRequest("This action only accepts POST.")
+
+    if "id" not in request.POST:
+        return HttpResponseBadRequest("This action requires an ID parameter.")
+
+    item = WishedForItem.objects.get(id=request.POST["id"])
+    item.delete()
+
+    return HttpResponse("Item deleted.")
+
+@login_required
+def increase_item_count(request):
+    if request.method != "POST":
+        return HttpResponseBadRequest("This action only accepts POST.")
+
+    if "id" not in request.POST:
+        return HttpResponseBadRequest("This action requires an ID parameter.")
+
+    item = WishedForItem.objects.get(id=request.POST["id"])
+    item.number_wished_for += 1
+    item.save()
+
+    return HttpResponse("Item count increased.")
+
+@login_required
+def decrease_item_count(request):
+    if request.method != "POST":
+        return HttpResponseBadRequest("This action only accepts POST.")
+
+    if "id" not in request.POST:
+        return HttpResponseBadRequest("This action requires an ID parameter.")
+
+    item = WishedForItem.objects.get(id=request.POST["id"])
+    item.number_wished_for -= 1
+    item.save()
+
+    if item.number_wished_for == 0:
+        item.delete()
+
+    return HttpResponse("Item count decreased.")
 
 def login_page(request):
     c = {}

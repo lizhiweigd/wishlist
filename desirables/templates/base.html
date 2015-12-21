@@ -12,6 +12,10 @@
   <link rel="stylesheet" type="text/css" href="{% static 'bs/css/bootstrap-theme.min.css' %}" />
   <script type="text/javascript" src="{% static 'jquery.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'bs/js/bootstrap.min.js' %}"></script>
+  <script type="text/javascript">{% block script %}{% endblock %}</script>
+  <style type="text/css">
+    {% block styles %}{% endblock %}
+  </style>
 </head>
 <body>
   <nav class="navbar navbar-default">

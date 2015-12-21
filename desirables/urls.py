@@ -29,6 +29,9 @@ urlpatterns = [
     
     # Wishlist interaction
     url(r'^add_item$', views.add_item),
+    url(r'^delete_item$', views.delete_item),
+    url(r'^decrease_item_count$', views.decrease_item_count),
+    url(r'^increase_item_count$', views.increase_item_count),
 
     # User authentication
     url(r'^login$', views.login_page),

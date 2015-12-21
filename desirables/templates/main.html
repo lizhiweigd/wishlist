@@ -1,12 +1,82 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
+{% block styles %}
+    .disabledelement {
+	pointer-events: none;
+	opacity: 0.4;
+    }
+{% endblock %}
+
+{% block script %}
+
+function increase_item_count(item_id){
+    jQuery("#item-" + item_id).toggleClass("disabledelement");
+    jQuery.ajax({
+	url: "/increase_item_count",
+	data: { id: item_id,
+		csrfmiddlewaretoken: jQuery("[name=csrfmiddlewaretoken]")[0].value },
+	method: "post",
+	success: function(){
+	    count = jQuery("#count-item-" + item_id)[0];
+	    count.innerHTML = parseInt(count.innerHTML) + 1;
+	    jQuery("#item-" + item_id).toggleClass("disabledelement");
+	},
+	error: function(){
+	    jQuery("#item-" + item_id).toggleClass("disabledelement");
+	}
+    });
+}
+
+function decrease_item_count(item_id){
+    jQuery("#item-" + item_id).toggleClass("disabledelement");
+    jQuery.ajax({
+	url: "/decrease_item_count",
+	data: { id: item_id,
+		csrfmiddlewaretoken: jQuery("[name=csrfmiddlewaretoken]")[0].value },
+	method: "post",
+	success: function(){
+	    count = jQuery("#count-item-" + item_id)[0];
+	    new_count = parseInt(count.innerHTML) - 1;
+	    if (new_count == 0){
+		jQuery("#item-" + item_id).fadeOut();
+	    }
+	    else {
+		count.innerHTML = new_count;
+	    }
+	    jQuery("#item-" + item_id).toggleClass("disabledelement");
+	},
+	error: function(){
+	    jQuery("#item-" + item_id).toggleClass("disabledelement");
+	}
+    });
+}
+
+function delete_item(item_id){
+    jQuery("#item-" + item_id).toggleClass("disabledelement");
+    jQuery.ajax({
+	url: "/delete_item",
+	data: { id: item_id,
+		csrfmiddlewaretoken: jQuery("[name=csrfmiddlewaretoken]")[0].value },
+	method: "post",
+	success: function(){
+	    jQuery("#item-" + item_id).fadeOut();
+	    jQuery("#item-" + item_id).toggleClass("disabledelement");
+	},
+	error: function(){
+	    jQuery("#item-" + item_id).toggleClass("disabledelement");
+	}
+    });
+}
+
+{% endblock %}
+
 {% block navbar_links %}
 <li><a href="/logout">Log out</a></li>
 {% endblock %}
 
 {% block main %}
-<h1>Welcome {{ users_name }}</h1>
+<h1>Welcome {{ users_name }}</h1>{% csrf_token %}
 
 <h2>Your wishlist:</h2>
 <h3 class="text-right"><a href="/new_item">Add item</a></h3>
@@ -15,7 +85,7 @@
 {% else %}
 <table class="table table-striped">
   {% for item in items %}
-  <tr>
+  <tr id="item-{{ item.id }}">
     <td style="width: 128px">
       {% if item.thumbnail.name != "" %}<img src="{{ MEDIA_URL }}{{ item.thumbnail.name }}" />
       {% else %}<img src="{% static 'pin.png' %}" />{% endif %}
@@ -25,12 +95,12 @@
       <p>{{ item.note }}</p>
     </td>
     <td style="vertical-align: middle; width: 120px">
-      <a href="/decrease_item_count?item_id={{ item.id }}"><span class="glyphicon glyphicon-minus"></span></a>
-      <span style="padding: 0px 15px;">{{ item.number_wished_for }}</span>
-      <a href="/increase_item_count?item_id={{ item.id }}"><span class="glyphicon glyphicon-plus"></span></a>
+      <a id="decrease-item-{{ item.id }}" href="javascript:decrease_item_count({{ item.id }})"><span class="glyphicon glyphicon-minus"></span></a>
+      <span style="padding: 0px 15px;" id="count-item-{{ item.id }}">{{ item.number_wished_for }}</span>
+      <a id="increase_item-{{ item.id }}" href="javascript:increase_item_count({{ item.id }})"><span class="glyphicon glyphicon-plus"></span></a>
     </td>
     <td style="vertical-align: middle; width: 14px">
-      <a href="/delete_item?item_id={{ item.id }}"><span class="glyphicon glyphicon-remove"></span></a>
+      <a id="delete_item-{{ item.id }}" href="javascript:delete_item({{ item.id }})"><span class="glyphicon glyphicon-remove"></span></a>
     </td>
   </tr>
   {% endfor %}
