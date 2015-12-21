@@ -25,12 +25,12 @@
       <p>{{ item.note }}</p>
     </td>
     <td style="vertical-align: middle; width: 120px">
-      <a href="/decrease_item_count"><span class="glyphicon glyphicon-minus"></span></a>
+      <a href="/decrease_item_count?item_id={{ item.id }}"><span class="glyphicon glyphicon-minus"></span></a>
       <span style="padding: 0px 15px;">{{ item.number_wished_for }}</span>
-      <a href="/increase_item_count"><span class="glyphicon glyphicon-plus"></span></a>
+      <a href="/increase_item_count?item_id={{ item.id }}"><span class="glyphicon glyphicon-plus"></span></a>
     </td>
     <td style="vertical-align: middle; width: 14px">
-      <a href="/delete_item"><span class="glyphicon glyphicon-remove"></span></a>
+      <a href="/delete_item?item_id={{ item.id }}"><span class="glyphicon glyphicon-remove"></span></a>
     </td>
   </tr>
   {% endfor %}
