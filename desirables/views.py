@@ -27,6 +27,18 @@ def main_page(request):
 
     return render_to_response("main.html", c)
 
+@login_required
+def new_item_page(request):
+    
+    c = {}
+    c.update(csrf(request))
+
+    return render_to_response("new_item.html", c)
+
+@login_required
+def add_item(request):
+    pass
+
 def login_page(request):
     c = {}
     c.update(csrf(request))

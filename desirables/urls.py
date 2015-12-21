@@ -19,8 +19,18 @@ from django.contrib import admin
 from desirables import views
 
 urlpatterns = [
+
+    # Home page
     url(r'^$', views.home_page),
+
+    # Wishlist views
     url(r'^main$', views.main_page),
+    url(r'^new_item', views.new_item_page),
+    
+    # Wishlist interaction
+    url(r'^add_item$', views.add_item),
+
+    # User authentication
     url(r'^login$', views.login_page),
     url(r'^submit_login', views.login),
     url(r'^invalid_login', views.invalid_login_page),

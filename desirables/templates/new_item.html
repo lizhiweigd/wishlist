@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block navbar_links %}
+<li><a href="/logout">Log out</a></li>
+{% endblock %}
+
+{% block main %}
+
+<div class="row">
+  <div class="col-md-4 col-md-offset-4">
+    <h1>Add new item</h1>
+    <form action="/add-item" method="post">{% csrf_token %}
+      <div class="form-group">
+	<label for="item_title">Title:</label>
+	<input class="form-control" type="text" id="item_name" name="item_name" placeholder="Title" />
+      </div>
+      <div class="form-group">
+	<label for="item_url">URL:</label>
+	<input class="form-control" type="url" id="item_url" name="item_url" placeholder="Item URL" />
+      </div>
+      <div class="form-group">
+	<label for="item_number_wanted">Number wanted:</label>
+	<input class="form-control" type="number" id="item_number_wanted" name="item_number_wanted" placeholder="Number wanted" value="1" />
+      <div class="form-group">
+	<label for="item_note">Note:</label>
+	<textarea class="form-control" id="item_note" name="item_note" rows="6" placeholder="Leave youself a note... (Optional)"></textarea> 
+      </div>
+      <input class="btn btn-success form-control" type="submit" value="Add item" />
+    </form>
+  </div>
+</div>
+
+{% endblock %}
